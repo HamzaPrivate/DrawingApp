@@ -1,0 +1,64 @@
+body {
+    font-family: Helvetica, sans-serif;
+}
+
+#board, #feedback{
+    position: fixed;
+    left: 10px;
+    top: 60px;
+}
+
+#board {
+    border: 1px solid #000;
+    /*
+    "The displayed size of the canvas can be changed using CSS, but if you do this
+     the image is scaled during rendering to fit the styled size, which can make 
+     the final graphics rendering end up being distorted.
+     It is better to specify your canvas dimensions by setting the width and height
+     attributes directly on the <canvas> elements, either directly in the HTML or
+     by using JavaScript."
+     (https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas)
+    */
+}
+
+.tool,
+.color {
+    border: 3px solid lightgray;
+}
+
+.tool,
+.selectedTool {
+    margin: 5px;
+    height: 35px;
+    width: 35px;
+}
+
+
+.selectedTool,
+.selectedColor {
+    border: 3px solid #a00;
+}
+
+#toolbar {
+    display: flex;
+    flex-flow: row;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 50px;
+    width: 100vw;
+    background-color: lightgray;
+}
+
+#colorbar {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    grid-template-rows: auto;
+    position: fixed;
+    right: 0;
+    top: 60px;
+    width: 150px;
+    height: calc(100% - 70px);
+    background-color: lightgray;
+
+}
