@@ -22,7 +22,7 @@ export class Controller {
     board: DrawingBoard;
     colorbar: ColorBar;
     toolbar: ToolBar;
-    
+
     /**
      * Erstellt die {@link ToolBar}, die {@link ColorBar} sowie die beiden
      * {@link DrawingBoard}s für die eigentliche Zeichnung und das Feedback.
@@ -34,7 +34,9 @@ export class Controller {
         }
 
         // Ergänzen Sie hier die Erzeugung der Komponenten
-        
+        this.board = new DrawingBoard(main, "board");
+        this.colorbar = new ColorBar(main, "colorbar");
+        this.toolbar = new ToolBar(main, "toolbar");
 
         // Registrierung der Event-Listener
         this.registerEventListener();
