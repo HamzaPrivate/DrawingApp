@@ -48,8 +48,7 @@ export class Controller {
      */
     registerEventListener() {
         // Ergänzen Sie hier die Anmeldung der Event-Listener
-        const board = document.querySelector("#board") as HTMLElement;
-        board.addEventListener('resize', () =>this.adjustBoardSize.bind(this));
+        window.addEventListener('resize', () => this.adjustBoardSize());
         const toolbar = this.toolbar.element;
         toolbar.addEventListener('click', (e) => this.changeTool(e));
         const colorbar = this.colorbar.element;
