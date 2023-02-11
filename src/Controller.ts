@@ -34,9 +34,9 @@ export class Controller {
         }
 
         // Ergänzen Sie hier die Erzeugung der Komponenten
-        this.board = new DrawingBoard(main, "board");
-        this.colorbar = new ColorBar(main, "colorbar");
         this.toolbar = new ToolBar(main, "toolbar");
+        this.colorbar = new ColorBar(main, "colorbar");
+        this.board = new DrawingBoard(main, "board");
 
         // Registrierung der Event-Listener
         this.registerEventListener();
