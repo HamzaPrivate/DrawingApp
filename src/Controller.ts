@@ -50,6 +50,18 @@ export class Controller {
         // Ergänzen Sie hier die Anmeldung der Event-Listener
         const board = document.querySelector("#board") as HTMLElement;
         board.addEventListener('resize', () =>this.adjustBoardSize.bind(this));
+        const toolbar = this.toolbar.element;
+        toolbar.addEventListener('click', (e) => this.changeTool(e));
+        const colorbar = this.colorbar.element;
+        colorbar.addEventListener('click', (e) => this.changeColor(e));
+    }
+    changeColor(ev: Event){
+        const target = ev.target as HTMLDivElement;
+        this.colorbar.select(target);
+    }
+    changeTool(ev: Event){
+        const target = ev.target as HTMLElement;
+        this.toolbar.select(target);
     }
 
     /**
