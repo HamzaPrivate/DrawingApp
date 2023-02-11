@@ -37,6 +37,7 @@ export class Controller {
         this.toolbar = new ToolBar(main, "toolbar");
         this.colorbar = new ColorBar(main, "colorbar");
         this.board = new DrawingBoard(main, "board");
+        this.adjustBoardSize();
 
         // Registrierung der Event-Listener
         this.registerEventListener();
@@ -47,6 +48,8 @@ export class Controller {
      */
     registerEventListener() {
         // Ergänzen Sie hier die Anmeldung der Event-Listener
+        const board = document.querySelector("#board") as HTMLElement;
+        board.addEventListener('resize', () =>this.adjustBoardSize.bind(this));
     }
 
     /**
