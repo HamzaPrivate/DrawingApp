@@ -104,7 +104,8 @@ export class Controller {
         this.board.setColor(this.colorbar.color);
         switch (this.toolbar.tool) {
             case "rect": this.board.drawRect(this.startpoint, end); break;
-            
+            case "circle": this.board.drawEllipse(this.startpoint, end); break;
+            case "line": this.board.drawLine(this.startpoint, end); break;
             default: break;
         }
         this.startpoint = undefined!;
