@@ -23,6 +23,7 @@ export class Controller {
     colorbar: ColorBar;
     toolbar: ToolBar;
     startpoint: Point;
+    feedback: DrawingBoard;
 
     /**
      * Erstellt die {@link ToolBar}, die {@link ColorBar} sowie die beiden
@@ -38,6 +39,8 @@ export class Controller {
         this.toolbar = new ToolBar(main, "toolbar");
         this.colorbar = new ColorBar(main, "colorbar");
         this.board = new DrawingBoard(main, "board");
+        this.feedback = new DrawingBoard(main, "feedback");
+        this.feedback.setColor("rgba(200,0,0,0.5)");
         this.startpoint = undefined!;
         this.adjustBoardSize();
 
@@ -56,45 +59,43 @@ export class Controller {
         const colorbar = this.colorbar.element;
         colorbar.addEventListener('click', (e) => this.changeColor(e));
 
-        const board = this.board.element;
-            board.addEventListener('click', (e) => {
-                if(!this.startpoint){
-                    let p = {
-                        x: e.x,
-                        y: e.y
-                    };
-                    this.startpoint = p;
-                }
-                else
+        const board = this.feedback.element;
+        board.addEventListener('click', (e) => {
+            if (!this.startpoint) {
+                let p = {
+                    x: e.x,
+                    y: e.y
+                };
+                this.startpoint = p;
+            }
+            else
                 this.draw(e)
-            });
-        }
-    
-
-    
-
+        });
+        board.addEventListener('mousemove', (e) =>this.showFeedback(e));
+    }
     /**
      * Passt die Größe der Canvas-Elemente der {@link DrawingBoard}s an.
      */
     adjustBoardSize() {
         this.board.resize(window.innerWidth - 170, window.innerHeight - 70);
+        this.feedback.resize(window.innerWidth - 170, window.innerHeight - 70);
     }
 
     /* Ergänzen Sie hier Ihre eigenen Methoden */
-    changeColor(ev: Event){
+    changeColor(ev: Event) {
         const target = ev.target as HTMLDivElement;
         this.colorbar.select(target);
     }
-    changeTool(ev: Event){
+    changeTool(ev: Event) {
         const target = ev.target as HTMLElement;
         this.toolbar.select(target);
     }
 
-    draw(ev: MouseEvent){
-        if(!this.toolbar.tool || !this.colorbar.color){
+    draw(ev: MouseEvent) {
+        if (!this.toolbar.tool || !this.colorbar.color) {
             throw new Error("Tool oder Color nicht ausgewählt");
         }
-        if(!this.startpoint){
+        if (!this.startpoint) {
             throw new Error("Es wurde kein Startpunkt gesetzt.");
         }
         let end = {
@@ -109,6 +110,19 @@ export class Controller {
             default: break;
         }
         this.startpoint = undefined!;
+        this.feedback.clear();
     }
 
+    showFeedback(ev: MouseEvent) {
+        let end = {
+            x: ev.x,
+            y: ev.y
+        };
+        switch (this.toolbar.tool) {
+            case "rect": this.feedback.drawRect(this.startpoint, end); break;
+            case "circle": this.feedback.drawEllipse(this.startpoint, end); break;
+            case "line": this.feedback.drawLine(this.startpoint, end); break;
+            default: break;
+        }
+    }
 }
