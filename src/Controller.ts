@@ -22,6 +22,7 @@ export class Controller {
     board: DrawingBoard;
     colorbar: ColorBar;
     toolbar: ToolBar;
+    startpoint: Point;
 
     /**
      * Erstellt die {@link ToolBar}, die {@link ColorBar} sowie die beiden
@@ -37,6 +38,7 @@ export class Controller {
         this.toolbar = new ToolBar(main, "toolbar");
         this.colorbar = new ColorBar(main, "colorbar");
         this.board = new DrawingBoard(main, "board");
+        this.startpoint = undefined!;
         this.adjustBoardSize();
 
         // Registrierung der Event-Listener
@@ -53,15 +55,23 @@ export class Controller {
         toolbar.addEventListener('click', (e) => this.changeTool(e));
         const colorbar = this.colorbar.element;
         colorbar.addEventListener('click', (e) => this.changeColor(e));
-    }
-    changeColor(ev: Event){
-        const target = ev.target as HTMLDivElement;
-        this.colorbar.select(target);
-    }
-    changeTool(ev: Event){
-        const target = ev.target as HTMLElement;
-        this.toolbar.select(target);
-    }
+
+        const board = this.board.element;
+            board.addEventListener('click', (e) => {
+                if(!this.startpoint){
+                    let p = {
+                        x: e.x,
+                        y: e.y
+                    };
+                    this.startpoint = p;
+                }
+                else
+                this.draw(e)
+            });
+        }
+    
+
+    
 
     /**
      * Passt die Größe der Canvas-Elemente der {@link DrawingBoard}s an.
@@ -71,5 +81,33 @@ export class Controller {
     }
 
     /* Ergänzen Sie hier Ihre eigenen Methoden */
+    changeColor(ev: Event){
+        const target = ev.target as HTMLDivElement;
+        this.colorbar.select(target);
+    }
+    changeTool(ev: Event){
+        const target = ev.target as HTMLElement;
+        this.toolbar.select(target);
+    }
+
+    draw(ev: MouseEvent){
+        if(!this.toolbar.tool || !this.colorbar.color){
+            throw new Error("Tool oder Color nicht ausgewählt");
+        }
+        if(!this.startpoint){
+            throw new Error("Es wurde kein Startpunkt gesetzt.");
+        }
+        let end = {
+            x: ev.x,
+            y: ev.y
+        };
+        this.board.setColor(this.colorbar.color);
+        switch (this.toolbar.tool) {
+            case "rect": this.board.drawRect(this.startpoint, end); break;
+            
+            default: break;
+        }
+        this.startpoint = undefined!;
+    }
 
 }
